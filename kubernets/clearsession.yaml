@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: django-session-cleanup
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: django-app
+            image: localhost:5000/django_test:latest
+            envFrom:
+              - configMapRef:
+                  name: django-app-config
+            imagePullPolicy: IfNotPresent
+            command:
+            - ./manage.py
+            - clearsessions
+          restartPolicy: OnFailure
