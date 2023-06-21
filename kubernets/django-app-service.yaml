@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-unit-deployment
+  labels:
+    app: django-app
+  annotations:
+    configmap.reloader.stakater.com/reload: django-app-config
+spec:
+  selector:
+    matchLabels:
+      app: django-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: django-app
+      annotations:
+        kubectl.kubernets.io/restartedAt: "2023-06-17T10:00:00Z"
+    spec:
+      containers:
+      - name: django-app
+        image: localhost:5000/django_test:latest
+        ports:
+          - containerPort: 80
+            name: nginx-unit-port
+        resources:
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        envFrom:
+          - configMapRef:
+              name: django-app-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: django-service
+spec:
+  selector:
+    app: django-app
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: nginx-unit-port
