@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrations
+  labels:
+    name: django-app
+    component: migrations
+spec:
+  template:
+    metadata:
+      labels:
+        name: django-app
+        component: migrations
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrations
+          image: localhost:5000/django_test:latest
+          envFrom:
+            - configMapRef:
+                name: django-app-config
+          imagePullPolicy: IfNotPresent
+          command:
+            - python
+            - manage.py
+            - migrate
