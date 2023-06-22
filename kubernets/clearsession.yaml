@@ -4,6 +4,8 @@ metadata:
   name: django-session-cleanup
 spec:
   schedule: "0 0 * * *"
+  startingDeadlineSeconds: 12
+  ttlSecondsAfterFinished: 21
   jobTemplate:
     spec:
       template:
