@@ -15,12 +15,11 @@ spec:
     metadata:
       labels:
         app: django-app
-      annotations:
-        kubectl.kubernets.io/restartedAt: "2023-06-17T10:00:00Z"
     spec:
       containers:
       - name: django-app
-        image: localhost:5000/django_test:latest
+        image: docker.io/library/django_test:latest
+        imagePullPolicy: IfNotPresent
         ports:
           - containerPort: 80
             name: nginx-unit-port
