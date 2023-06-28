@@ -12,7 +12,7 @@ spec:
         spec:
           containers:
           - name: django-app
-            image: localhost:5000/django_test:latest
+            image: docker.io/library/django_test:latest
             envFrom:
               - configMapRef:
                   name: django-app-config
